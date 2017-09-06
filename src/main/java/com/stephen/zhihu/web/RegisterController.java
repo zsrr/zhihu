@@ -1,13 +1,14 @@
 package com.stephen.zhihu.web;
 
 import com.stephen.zhihu.domain.User;
-import com.stephen.zhihu.exception.ActionResolveException;
+import com.stephen.zhihu.dto.BaseResponse;
+import com.stephen.zhihu.dto.RegisterResponse;
+import com.stephen.zhihu.dto.VerificationSMSResponse;
 import com.stephen.zhihu.service.UserService;
 import com.stephen.zhihu.service.UserValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,35 +27,23 @@ public class RegisterController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public ResponseEntity register(@RequestParam("action") String action,
-                                   @RequestParam("phone") String phone,
-                                   @RequestParam(value = "password", required = false) String password,
-                                   @RequestParam(value = "msgId", required = false) String msgId,
-                                   @RequestParam(value = "code", required = false) String smsCode) throws MissingServletRequestParameterException {
+    public ResponseEntity<RegisterResponse> register(@RequestParam("phone") String phone, @RequestParam("password") String password) {
         User user = new User(phone, password);
-        if (action.equals("send")) {
-            validationService.registerValidation(user, false);
-            return new ResponseEntity(userService.registerSendSMSCode(phone), HttpStatus.OK);
-        } else if (action.equals("verify")) {
-            if (msgId == null) {
-                throw new MissingServletRequestParameterException("msgId", "String");
-            }
+        validationService.isUserInVerifiedList(phone);
+        validationService.registerValidation(user, true);
+        return new ResponseEntity<>(userService.initPassword(phone, password), HttpStatus.CREATED);
+    }
 
-            if (smsCode == null) {
-                throw new MissingServletRequestParameterException("code", "String");
-            }
-            validationService.registerValidation(user, false);
-            return new ResponseEntity(userService.registerVerifyCode(phone, msgId, smsCode), HttpStatus.OK);
-        } else if (action.equals("register")) {
-            if (password == null) {
-                throw new MissingServletRequestParameterException("password", "String");
-            }
+    @RequestMapping(value = "/send", method = RequestMethod.POST)
+    public ResponseEntity<VerificationSMSResponse> send(@RequestParam("phone") String phone) {
+        validationService.registerValidation(new User(phone, null), false);
+        return new ResponseEntity<>(userService.registerSendSMSCode(phone), HttpStatus.OK);
+    }
 
-            validationService.registerValidation(user, true);
-            validationService.isUserInVerifiedList(phone);
-            return new ResponseEntity(userService.initPassword(phone, password), HttpStatus.CREATED);
-        } else {
-            throw new ActionResolveException("名为 " + action + " 的action无法解析");
-        }
+    @RequestMapping(value = "/verify", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+    public ResponseEntity<BaseResponse> verify(@RequestParam("phone") String phone,
+                                               @RequestParam("msgId") String msgId,
+                                               @RequestParam("code") String smsCode) {
+        return new ResponseEntity<>(userService.registerVerifyCode(phone, msgId, smsCode), HttpStatus.OK);
     }
 }

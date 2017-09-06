@@ -2,12 +2,9 @@ package com.stephen.zhihu.dto;
 
 import com.stephen.zhihu.domain.User;
 
-import java.io.Serializable;
 
-public class ThirdPartyInfo implements Serializable {
-
-    private static final long serialVersionUID = 14L;
-
+public class ThirdPartyInfo {
+    String openId;
     String avatar;
     String nickname;
     User.Gender gender;
@@ -15,7 +12,8 @@ public class ThirdPartyInfo implements Serializable {
     public ThirdPartyInfo() {
     }
 
-    public ThirdPartyInfo(String avatar, String nickname, User.Gender gender) {
+    public ThirdPartyInfo(String openId, String avatar, String nickname, User.Gender gender) {
+        this.openId = openId;
         this.avatar = avatar;
         this.nickname = nickname;
         this.gender = gender;
@@ -43,5 +41,13 @@ public class ThirdPartyInfo implements Serializable {
 
     public void setGender(User.Gender gender) {
         this.gender = gender;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

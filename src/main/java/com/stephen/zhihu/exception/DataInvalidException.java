@@ -4,15 +4,11 @@ import com.stephen.zhihu.dto.BaseResponse;
 import com.stephen.zhihu.dto.ErrorDetail;
 import org.springframework.http.HttpStatus;
 
-public class ActionResolveException extends BaseRuntimeException {
-    public ActionResolveException(String message) {
-        super(message);
-    }
-
+public class DataInvalidException extends BaseRuntimeException {
     @Override
     public BaseResponse getBaseResponse() {
-        ErrorDetail ed = new ErrorDetail("Action cannot be resolved", this.getClass(), getMessage());
-        return new BaseResponse(HttpStatus.BAD_REQUEST, ed);
+        ErrorDetail errorDetail = new ErrorDetail("Post data is invalid", this.getClass(), "数据不符合规范");
+        return new BaseResponse(HttpStatus.BAD_REQUEST, errorDetail);
     }
 
     @Override

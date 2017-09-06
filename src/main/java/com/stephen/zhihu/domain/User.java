@@ -27,14 +27,6 @@ public class User {
     @NotNull
     protected String phone;
 
-    @Column(name = "QQ_ACCOUNT", unique = true, length = 15)
-    @Pattern(regexp = "[1-9][0-9]{4,14}")
-    protected String qq;
-
-    @Column(name = "WECHAT_ID", unique = true, length = 30)
-    @Pattern(regexp = "^[a-z_\\d]+$")
-    protected String wechat;
-
     /**
      * Md5加密字符串  32位
      */
@@ -51,6 +43,12 @@ public class User {
     @NotNull
     protected String nickname;
 
+    @Column(name = "QQ_OPEN_ID", length = 100)
+    protected String qqOpenId;
+
+    @Column(name = "WECHAT_OPEN_ID", length = 100)
+    protected String wechatOpenId;
+
     @Enumerated(EnumType.STRING)
     protected Gender gender;
 
@@ -60,22 +58,6 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
-    }
-
-    public String getWechat() {
-        return wechat;
-    }
-
-    public void setWechat(String wechat) {
-        this.wechat = wechat;
     }
 
     public Long getId() {
@@ -104,6 +86,22 @@ public class User {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getQqOpenId() {
+        return qqOpenId;
+    }
+
+    public void setQqOpenId(String qqOpenId) {
+        this.qqOpenId = qqOpenId;
+    }
+
+    public String getWechatOpenId() {
+        return wechatOpenId;
+    }
+
+    public void setWechatOpenId(String wechatOpenId) {
+        this.wechatOpenId = wechatOpenId;
     }
 
     public Gender getGender() {

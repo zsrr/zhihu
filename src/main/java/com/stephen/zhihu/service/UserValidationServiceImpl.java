@@ -2,6 +2,7 @@ package com.stephen.zhihu.service;
 
 import com.stephen.zhihu.dao.UserRepository;
 import com.stephen.zhihu.domain.User;
+import com.stephen.zhihu.dto.ThirdPartyInfo;
 import com.stephen.zhihu.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,11 +39,11 @@ public class UserValidationServiceImpl implements UserValidationService {
         Set<ConstraintViolation<User>> passwordViolations = validator.validateProperty(user, "password");
 
         if (!usernameViolations.isEmpty()) {
-            throw new UserInfoInvalidException();
+            throw new DataInvalidException();
         }
 
         if (includePassword && !passwordViolations.isEmpty()) {
-            throw new UserInfoInvalidException();
+            throw new DataInvalidException();
         }
 
         if (userDAO.hasUser(user.getPhone())) {
@@ -60,6 +61,27 @@ public class UserValidationServiceImpl implements UserValidationService {
     }
 
     @Override
+    public void loginValidation(String phone) {
+        if (!userDAO.hasUser(phone)) {
+            throw new UserNotFoundException();
+        }
+    }
+
+    @Override
+    public void loginValidation(Long id) {
+        if (!userDAO.hasUser(id)) {
+            throw new UserNotFoundException();
+        }
+    }
+
+    @Override
+    public void currentUserValidation(Long userId, Long currentUserId) {
+        if (!userId.equals(currentUserId)) {
+            throw new NotCurrentUserException();
+        }
+    }
+
+    @Override
     public void bindQQValidation(String qq) {
         if (userDAO.isQQBound(qq)) {
             throw new QQAccountAlreadyBoundException();
@@ -70,6 +92,27 @@ public class UserValidationServiceImpl implements UserValidationService {
     public void bindWechatValidation(String wechat) {
         if (userDAO.isWechatIdBound(wechat)) {
             throw new WechatAlreadyBoundException();
+        }
+    }
+
+    @Override
+    public void thirdPartyInfoValidation(ThirdPartyInfo info) {
+        if (info == null || info.getOpenId() == null) {
+            throw new DataInvalidException();
+        }
+    }
+
+    @Override
+    public void loginByQQValidation(String openId) {
+        if (!userDAO.isQQBound(openId)) {
+            throw new UserNotFoundException();
+        }
+    }
+
+    @Override
+    public void loginByWechatValidation(String openId) {
+        if (!userDAO.isWechatIdBound(openId)) {
+            throw new UserNotFoundException();
         }
     }
 }
