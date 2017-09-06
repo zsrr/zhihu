@@ -2,6 +2,8 @@ package com.stephen.zhihu.config;
 
 import cn.jiguang.common.ClientConfig;
 import cn.jpush.api.JPushClient;
+import cn.jsms.api.JSMSClient;
+import cn.jsms.api.common.JSMSConfig;
 import com.stephen.zhihu.Constants;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.hibernate.EhCacheRegionFactory;
@@ -48,6 +50,18 @@ public class RootConfig {
         config.setMaxWaitMillis(300 * 1000);
         config.setMinEvictableIdleTimeMillis(15 * 60 * 1000);
         return new JedisPool(config, "127.0.0.1", 6379, 20 * 1000);
+    }
+
+    @Bean
+    public JSMSClient jsmsClient() {
+        ClassPathResource classPathResource = new ClassPathResource("jiguang.properties", this.getClass().getClassLoader());
+        Properties properties;
+        try {
+            properties = PropertiesLoaderUtils.loadProperties(classPathResource);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new JSMSClient(properties.getProperty("masterSecret"), properties.getProperty("appKey"), null, JSMSConfig.getInstance());
     }
 
     @Bean
@@ -154,18 +168,6 @@ public class RootConfig {
     public HibernatePropertiesConfig testDialect() {
         return new HibernatePropertiesConfig("org.hibernate.dialect.H2Dialect", "create");
     }
-
-    /*@Bean
-    @Profile("pro")
-    public JPushService proJPushService(JedisPool jedisPool, JPushClient jPushClient) {
-        return new JPushServiceImpl(jedisPool, jPushClient);
-    }
-
-    @Bean
-    @Profile("dev")
-    public JPushService devJPushService(JedisPool jedisPool) {
-        return new JPushServiceVirtualImpl(jedisPool);
-    }*/
 
     @Bean
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
