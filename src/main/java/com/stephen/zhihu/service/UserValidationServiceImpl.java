@@ -8,6 +8,8 @@ import com.stephen.zhihu.exception.UserInfoInvalidException;
 import com.stephen.zhihu.exception.WechatAlreadyBoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -16,6 +18,7 @@ import javax.validation.ValidatorFactory;
 import java.util.Set;
 
 @Service
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class UserValidationServiceImpl implements UserValidationService {
 
     private UserRepository userDAO;

@@ -4,7 +4,7 @@ import com.stephen.zhihu.domain.User;
 
 import java.io.Serializable;
 
-public class ThirdPartyMessage implements Serializable {
+public class ThirdPartyInfo implements Serializable {
 
     private static final long serialVersionUID = 14L;
 
@@ -12,10 +12,10 @@ public class ThirdPartyMessage implements Serializable {
     String nickname;
     User.Gender gender;
 
-    public ThirdPartyMessage() {
+    public ThirdPartyInfo() {
     }
 
-    public ThirdPartyMessage(String avatar, String nickname, User.Gender gender) {
+    public ThirdPartyInfo(String avatar, String nickname, User.Gender gender) {
         this.avatar = avatar;
         this.nickname = nickname;
         this.gender = gender;

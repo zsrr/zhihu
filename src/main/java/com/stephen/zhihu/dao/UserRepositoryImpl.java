@@ -60,4 +60,10 @@ public class UserRepositoryImpl extends BaseRepository implements UserRepository
         session.persist(user);
         return user;
     }
+
+    @Override
+    public User getUser(Long id) {
+        Session session = getCurrentSession();
+        return session.get(User.class, id);
+    }
 }

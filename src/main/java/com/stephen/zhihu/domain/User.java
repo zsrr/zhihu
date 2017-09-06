@@ -51,6 +51,9 @@ public class User {
     @NotNull
     protected String nickname;
 
+    @Enumerated(EnumType.STRING)
+    protected Gender gender;
+
     public String getPhone() {
         return phone;
     }
@@ -101,6 +104,14 @@ public class User {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public User() {

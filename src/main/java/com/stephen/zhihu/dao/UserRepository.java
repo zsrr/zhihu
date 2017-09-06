@@ -7,4 +7,5 @@ public interface UserRepository {
     boolean isQQBound(String qq);
     boolean isWechatIdBound(String wechat);
     User register(String phone, String password, String nickname);
+    User getUser(Long id);
 }
