@@ -1,7 +1,7 @@
 package com.stephen.zhihu.exception;
 
-import com.stephen.bangbang.dto.BaseResponse;
-import com.stephen.bangbang.dto.ErrorDetail;
+import com.stephen.zhihu.dto.BaseResponse;
+import com.stephen.zhihu.dto.ErrorDetail;
 import org.springframework.http.HttpStatus;
 
 public class DuplicatedUserException extends BaseRuntimeException {
