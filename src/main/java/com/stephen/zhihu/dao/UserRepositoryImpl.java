@@ -1,6 +1,7 @@
 package com.stephen.zhihu.dao;
 
 import com.stephen.zhihu.domain.User;
+import com.stephen.zhihu.domain.UserRelationship;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,5 +105,24 @@ public class UserRepositoryImpl extends BaseRepository implements UserRepository
         Session session = getCurrentSession();
         session.detach(getUser(user.getId()));
         session.update(user);
+    }
+
+    @Override
+    public void addFollower(Long userId, Long targetUserId) {
+        Session session = getCurrentSession();
+        TypedQuery<UserRelationship> query = session.createQuery("select r from UserRelationship r where r.id.sender = :target and r.id.target = :sender").
+                setParameter("target", targetUserId).
+                setParameter("sender", userId);
+        UserRelationship relationship = null;
+        try {
+            relationship = query.getSingleResult();
+        } catch (NoResultException ignore) {
+        }
+        UserRelationship newRelation = new UserRelationship(new UserRelationship.Id(userId, targetUserId));
+        if (relationship != null) {
+            relationship.setMutual(true);
+            newRelation.setMutual(true);
+        }
+        session.persist(newRelation);
     }
 }

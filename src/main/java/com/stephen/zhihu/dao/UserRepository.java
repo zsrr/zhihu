@@ -13,4 +13,5 @@ public interface UserRepository {
     User getUserByQQ(String openId);
     User getUserByWechat(String openId);
     void update(User user);
+    void addFollower(Long userId, Long targetUserId);
 }

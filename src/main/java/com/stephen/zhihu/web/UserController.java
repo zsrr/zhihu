@@ -6,6 +6,7 @@ import com.stephen.zhihu.authorization.Authorization;
 import com.stephen.zhihu.authorization.CurrentUserId;
 import com.stephen.zhihu.domain.User;
 import com.stephen.zhihu.dto.BaseResponse;
+import com.stephen.zhihu.dto.FollowerResponse;
 import com.stephen.zhihu.dto.ThirdPartyInfo;
 import com.stephen.zhihu.service.UserService;
 import com.stephen.zhihu.service.UserValidationService;
@@ -46,11 +47,16 @@ public class UserController {
 
     @RequestMapping(value = "/{userId}/info", method = RequestMethod.GET)
     public ResponseEntity<User> getInfo(@PathVariable("userId") Long userId) {
-        return new ResponseEntity<User>(userService.getUser(userId), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUser(userId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.PATCH)
     public ResponseEntity<BaseResponse> update(@CurrentUserId Long userId, @RequestBody ObjectNode node) throws JsonProcessingException {
         return new ResponseEntity<>(userService.update(userId, node), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/followers", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> addFollowers(@CurrentUserId Long userId, @RequestParam("target") Long targetUser) {
+        return new ResponseEntity<>(userService.addFollower(userId, targetUser), HttpStatus.CREATED);
     }
 }

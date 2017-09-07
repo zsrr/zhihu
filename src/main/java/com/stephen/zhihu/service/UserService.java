@@ -20,4 +20,6 @@ public interface UserService {
 
     User getUser(Long userId);
     BaseResponse update(Long userId, ObjectNode node) throws JsonProcessingException;
+
+    BaseResponse addFollower(Long userId, Long targetUserId);
 }

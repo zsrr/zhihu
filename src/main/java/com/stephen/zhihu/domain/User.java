@@ -38,17 +38,16 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     protected String password;
 
-    @Column(length = 100)
     protected String avatar;
 
     @Column(length = 15, nullable = false)
     @NotNull
     protected String nickname;
 
-    @Column(name = "QQ_OPEN_ID", length = 100)
+    @Column(name = "QQ_OPEN_ID")
     protected String qqOpenId;
 
-    @Column(name = "WECHAT_OPEN_ID", length = 100)
+    @Column(name = "WECHAT_OPEN_ID")
     protected String wechatOpenId;
 
     @Enumerated(EnumType.STRING)

@@ -12,6 +12,7 @@ import com.stephen.zhihu.dto.*;
 import com.stephen.zhihu.exception.PasswordIncorrectException;
 import com.stephen.zhihu.exception.SMSCodeNotCorrectException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -153,6 +154,15 @@ public class UserServiceImpl implements UserService {
 
         }
         return new BaseResponse();
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public BaseResponse addFollower(Long userId, Long targetUserId) {
+        userDAO.addFollower(userId, targetUserId);
+        BaseResponse br = new BaseResponse();
+        br.setStatus(HttpStatus.CREATED.value());
+        return br;
     }
 
     private User merge(User targetUser, ObjectNode node) throws JsonProcessingException {
