@@ -6,6 +6,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER", indexes = {@Index(name = "phone", columnList = "PHONE", unique = true),
@@ -36,10 +38,10 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     protected String password;
 
-    @Column(length = 120)
+    @Column(length = 100)
     protected String avatar;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 15, nullable = false)
     @NotNull
     protected String nickname;
 
@@ -51,6 +53,23 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     protected Gender gender;
+
+    @Column(length = 50)
+    protected String tags;
+
+    @Column(length = 150)
+    protected String profile;
+
+    @Column(length = 20)
+    protected String industry;
+
+    protected Address location;
+
+    protected JobInfo jobInfo;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "EDUCATION_INFO")
+    protected Set<Education> educations = new HashSet<>();
 
     public String getPhone() {
         return phone;
@@ -112,6 +131,30 @@ public class User {
         this.gender = gender;
     }
 
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
     public User() {
     }
 
@@ -124,5 +167,25 @@ public class User {
     public User(String phone, String password) {
         this.phone = phone;
         this.password = password;
+    }
+
+    public Set<Education> getEducations() {
+        return educations;
+    }
+
+    public Address getLocation() {
+        return location;
+    }
+
+    public void setLocation(Address location) {
+        this.location = location;
+    }
+
+    public JobInfo getJobInfo() {
+        return jobInfo;
+    }
+
+    public void setJobInfo(JobInfo jobInfo) {
+        this.jobInfo = jobInfo;
     }
 }

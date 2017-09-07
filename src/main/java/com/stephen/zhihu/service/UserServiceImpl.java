@@ -1,5 +1,9 @@
 package com.stephen.zhihu.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.stephen.zhihu.authorization.TokenManager;
 import com.stephen.zhihu.authorization.TokenModel;
 import com.stephen.zhihu.dao.UserRepository;
@@ -14,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
+
+import java.util.Iterator;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -128,5 +134,39 @@ public class UserServiceImpl implements UserService {
         user.setWechatOpenId(info.getOpenId());
         updateUserByThirdPartyInfo(user, info);
         return new BaseResponse();
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public User getUser(Long userId) {
+        return userDAO.getUser(userId);
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public BaseResponse update(Long userId, ObjectNode node) throws JsonProcessingException {
+        User user = userDAO.getUser(userId);
+        user = merge(user, node);
+        userDAO.update(user);
+        // 密码更新操作
+        if (node.has("password")) {
+
+        }
+        return new BaseResponse();
+    }
+
+    private User merge(User targetUser, ObjectNode node) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode targetNode = objectMapper.convertValue(targetUser, ObjectNode.class);
+        targetNode.put("password", targetUser.getPassword());
+
+        Iterator<String> fields = node.fieldNames();
+        while (fields.hasNext()) {
+            String field = fields.next();
+            JsonNode updateValue = node.get(field);
+            targetNode.replace(field, updateValue);
+        }
+
+        return objectMapper.treeToValue(targetNode, User.class);
     }
 }

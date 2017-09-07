@@ -12,4 +12,5 @@ public interface UserRepository {
     User getUser(String phone);
     User getUserByQQ(String openId);
     User getUserByWechat(String openId);
+    void update(User user);
 }

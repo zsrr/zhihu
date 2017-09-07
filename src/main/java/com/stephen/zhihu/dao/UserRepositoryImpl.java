@@ -98,4 +98,11 @@ public class UserRepositoryImpl extends BaseRepository implements UserRepository
         TypedQuery<User> query = session.createQuery("select u from User u where u.wechatOpenId = :openId").setParameter("openId", openId);
         return query.getSingleResult();
     }
+
+    @Override
+    public void update(User user) {
+        Session session = getCurrentSession();
+        session.detach(getUser(user.getId()));
+        session.update(user);
+    }
 }

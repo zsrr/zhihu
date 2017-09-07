@@ -1,5 +1,6 @@
 package com.stephen.zhihu.exception;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.stephen.zhihu.dto.BaseResponse;
 import com.stephen.zhihu.dto.ErrorDetail;
 import com.stephen.zhihu.util.ExceptionUtils;
@@ -22,8 +23,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<BaseResponse> constraintViolation(ConstraintViolationException exception) {
         ErrorDetail ed = new ErrorDetail("Constraint not met", ConstraintViolationException.class, exception.getMessage());
-        BaseResponse br = new BaseResponse(HttpStatus.NOT_ACCEPTABLE, ed);
-        return new ResponseEntity<BaseResponse>(br, HttpStatus.NOT_ACCEPTABLE);
+        BaseResponse br = new BaseResponse(HttpStatus.BAD_REQUEST, ed);
+        return new ResponseEntity<BaseResponse>(br, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    public ResponseEntity<BaseResponse> jsonProcessException(JsonProcessingException exception) {
+        ErrorDetail ed = new ErrorDetail("Json is invalid", JsonProcessingException.class, exception.getMessage());
+        BaseResponse br = new BaseResponse(HttpStatus.BAD_REQUEST, ed);
+        return new ResponseEntity<BaseResponse>(br, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

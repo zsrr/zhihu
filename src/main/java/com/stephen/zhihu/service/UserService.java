@@ -1,5 +1,8 @@
 package com.stephen.zhihu.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.stephen.zhihu.domain.User;
 import com.stephen.zhihu.dto.*;
 
 public interface UserService {
@@ -14,4 +17,7 @@ public interface UserService {
 
     BaseResponse bindQQ(Long userId, ThirdPartyInfo info);
     BaseResponse bindWechat(Long userId, ThirdPartyInfo info);
+
+    User getUser(Long userId);
+    BaseResponse update(Long userId, ObjectNode node) throws JsonProcessingException;
 }
