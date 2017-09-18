@@ -1,4 +1,6 @@
-/src/main/webapp
+/src/main/webapp/META-INF
+/src/main/webapp/WEB-INF/classes
+/src/main/webapp/WEB-INF/lib
 /.idea
 ZhiHu.iml
 /src/main/resources/jiguang.properties
