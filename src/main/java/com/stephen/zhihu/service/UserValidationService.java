@@ -1,6 +1,6 @@
 package com.stephen.zhihu.service;
 
-import com.stephen.zhihu.domain.User;
+import com.stephen.zhihu.domain_jpa.User;
 import com.stephen.zhihu.dto.ThirdPartyInfo;
 
 public interface UserValidationService {
@@ -8,7 +8,6 @@ public interface UserValidationService {
     void isUserInVerifiedList(String phone);
     void loginValidation(String phone);
     void loginValidation(Long id);
-    void currentUserValidation(Long userId, Long currentUserId);
     void bindQQValidation(String qqOpenId);
     void bindWechatValidation(String wechatOpenId);
     void thirdPartyInfoValidation(ThirdPartyInfo info);

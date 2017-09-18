@@ -1,6 +1,6 @@
 package com.stephen.zhihu.web;
 
-import com.stephen.zhihu.domain.User;
+import com.stephen.zhihu.domain_jpa.User;
 import com.stephen.zhihu.dto.BaseResponse;
 import com.stephen.zhihu.dto.RegisterResponse;
 import com.stephen.zhihu.dto.VerificationSMSResponse;

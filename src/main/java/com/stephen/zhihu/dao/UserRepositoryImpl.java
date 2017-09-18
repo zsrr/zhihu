@@ -1,7 +1,7 @@
 package com.stephen.zhihu.dao;
 
-import com.stephen.zhihu.domain.User;
-import com.stephen.zhihu.domain.UserRelationship;
+import com.stephen.zhihu.domain_jpa.User;
+import com.stephen.zhihu.domain_jpa.UserRelationship;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

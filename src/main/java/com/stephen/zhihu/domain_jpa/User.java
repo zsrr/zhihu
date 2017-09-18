@@ -1,4 +1,4 @@
-package com.stephen.zhihu.domain;
+package com.stephen.zhihu.domain_jpa;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

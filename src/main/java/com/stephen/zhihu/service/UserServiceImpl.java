@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.stephen.zhihu.authorization.TokenManager;
 import com.stephen.zhihu.authorization.TokenModel;
 import com.stephen.zhihu.dao.UserRepository;
-import com.stephen.zhihu.domain.User;
+import com.stephen.zhihu.domain_jpa.User;
 import com.stephen.zhihu.dto.*;
 import com.stephen.zhihu.exception.PasswordIncorrectException;
 import com.stephen.zhihu.exception.SMSCodeNotCorrectException;

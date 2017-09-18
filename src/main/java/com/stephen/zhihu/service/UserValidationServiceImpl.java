@@ -1,7 +1,7 @@
 package com.stephen.zhihu.service;
 
 import com.stephen.zhihu.dao.UserRepository;
-import com.stephen.zhihu.domain.User;
+import com.stephen.zhihu.domain_jpa.User;
 import com.stephen.zhihu.dto.ThirdPartyInfo;
 import com.stephen.zhihu.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,13 +71,6 @@ public class UserValidationServiceImpl implements UserValidationService {
     public void loginValidation(Long id) {
         if (!userDAO.hasUser(id)) {
             throw new UserNotFoundException();
-        }
-    }
-
-    @Override
-    public void currentUserValidation(Long userId, Long currentUserId) {
-        if (!userId.equals(currentUserId)) {
-            throw new NotCurrentUserException();
         }
     }
 

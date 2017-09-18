@@ -2,7 +2,7 @@ package com.stephen.zhihu.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.stephen.zhihu.domain.User;
+import com.stephen.zhihu.domain_jpa.User;
 import com.stephen.zhihu.dto.*;
 
 public interface UserService {

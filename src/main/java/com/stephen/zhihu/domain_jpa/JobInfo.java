@@ -1,4 +1,4 @@
-package com.stephen.zhihu.domain;
+package com.stephen.zhihu.domain_jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

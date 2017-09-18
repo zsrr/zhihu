@@ -1,7 +1,8 @@
-package com.stephen.zhihu.domain;
+package com.stephen.zhihu.domain_jpa;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "USER_RELATIONSHIPS")
@@ -65,6 +66,9 @@ public class UserRelationship {
     @EmbeddedId
     protected Id id;
 
+    @Temporal(TemporalType.DATE)
+    protected Date createdTime = new Date();
+
     boolean mutual = false;
 
     public UserRelationship(Id id) {
@@ -81,5 +85,13 @@ public class UserRelationship {
 
     public void setMutual(boolean mutual) {
         this.mutual = mutual;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 }

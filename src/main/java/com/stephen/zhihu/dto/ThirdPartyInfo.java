@@ -1,6 +1,6 @@
 package com.stephen.zhihu.dto;
 
-import com.stephen.zhihu.domain.User;
+import com.stephen.zhihu.domain_jpa.User;
 
 
 public class ThirdPartyInfo {

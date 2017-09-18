@@ -7,7 +7,7 @@
                 @org.hibernate.annotations.Parameter(name = "initial_value", value = "1")
         }
 )
-package com.stephen.zhihu.domain;
+package com.stephen.zhihu.domain_jpa;
 
 interface Constants {
     String PERFECT_SEQUENCE = "PERFECT_GENERATOR";

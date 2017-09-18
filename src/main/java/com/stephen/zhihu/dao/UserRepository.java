@@ -1,6 +1,6 @@
 package com.stephen.zhihu.dao;
 
-import com.stephen.zhihu.domain.User;
+import com.stephen.zhihu.domain_jpa.User;
 
 public interface UserRepository {
     boolean hasUser(String phone);
