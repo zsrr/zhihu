@@ -1,6 +1,8 @@
 package com.stephen.zhihu.domain_jpa;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "TOPICS", indexes = @Index(name = "title", columnList = "TITLE", unique = true))
@@ -17,6 +19,18 @@ public class Topic {
     protected String intro;
 
     protected String icon;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    protected Topic upperTopic;
+
+    @OneToMany
+    @JoinTable(name = "TOPIC_HIERARCHY",
+            joinColumns = @JoinColumn(name = "UPPER_TOPIC_ID"),
+            inverseJoinColumns = @JoinColumn(name = "CHILD_TOPIC_ID"))
+    protected Set<Topic> childTopics = new HashSet<>();
+
+    @ManyToMany(mappedBy = "topics")
+    protected Set<Question> questions = new HashSet<>();
 
     public String getTitle() {
         return title;
@@ -44,5 +58,21 @@ public class Topic {
 
     public Long getId() {
         return id;
+    }
+
+    public Topic getUpperTopic() {
+        return upperTopic;
+    }
+
+    public void setUpperTopic(Topic upperTopic) {
+        this.upperTopic = upperTopic;
+    }
+
+    public Set<Topic> getChildTopics() {
+        return childTopics;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
     }
 }

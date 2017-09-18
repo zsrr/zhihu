@@ -70,6 +70,25 @@ public class User {
     @CollectionTable(name = "EDUCATION_INFO")
     protected Set<Education> educations = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    protected Set<Question> questions = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    protected Set<Reply> replies = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    protected Set<Comment> comments = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "USER_QUESTIONS_CONCERNED",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "QUESTION_ID"))
+    protected Set<Question> questionsCaredAbout = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "USER_AGREED_REPLIES")
+    protected Set<Reply> agreedReplies = new HashSet<>();
+
     public String getPhone() {
         return phone;
     }
@@ -186,5 +205,25 @@ public class User {
 
     public void setJobInfo(JobInfo jobInfo) {
         this.jobInfo = jobInfo;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public Set<Question> getQuestionsCaredAbout() {
+        return questionsCaredAbout;
+    }
+
+    public Set<Reply> getAgreedReplies() {
+        return agreedReplies;
+    }
+
+    public Set<Reply> getReplies() {
+        return replies;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
     }
 }
