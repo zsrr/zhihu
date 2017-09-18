@@ -50,7 +50,7 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
                 "com.stephen.zhihu.authorization"})
 @EnableCaching
 @EnableTransactionManagement
-@EnableElasticsearchRepositories(basePackages = "com.stephen.zhihu.domain_elasticsearch", considerNestedRepositories = true)
+@EnableElasticsearchRepositories(basePackages = "com.stephen.zhihu.elasticsearch_repository")
 public class RootConfig {
 
     @Bean
