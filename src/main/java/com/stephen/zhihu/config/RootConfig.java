@@ -5,6 +5,7 @@ import cn.jpush.api.JPushClient;
 import cn.jsms.api.JSMSClient;
 import cn.jsms.api.common.JSMSConfig;
 import com.stephen.zhihu.Constants;
+import com.stephen.zhihu.util.PropertiesUtils;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.hibernate.EhCacheRegionFactory;
 import org.elasticsearch.client.Client;
@@ -21,7 +22,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
@@ -38,7 +38,6 @@ import redis.clients.jedis.JedisPoolConfig;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
@@ -71,25 +70,13 @@ public class RootConfig {
 
     @Bean
     public JSMSClient jsmsClient() {
-        ClassPathResource classPathResource = new ClassPathResource("jiguang.properties", this.getClass().getClassLoader());
-        Properties properties;
-        try {
-            properties = PropertiesLoaderUtils.loadProperties(classPathResource);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Properties properties = PropertiesUtils.loadProperties("jiguang.properties");
         return new JSMSClient(properties.getProperty("masterSecret"), properties.getProperty("appKey"), null, JSMSConfig.getInstance());
     }
 
     @Bean
     public JPushClient jPushClient() {
-        ClassPathResource classPathResource = new ClassPathResource("jiguang.properties", this.getClass().getClassLoader());
-        Properties properties;
-        try {
-            properties = PropertiesLoaderUtils.loadProperties(classPathResource);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Properties properties = PropertiesUtils.loadProperties("jiguang.properties");
 
         ClientConfig clientConfig = ClientConfig.getInstance();
         clientConfig.setApnsProduction(Constants.JIHUANG_CLIENT_IN_PRODUCTION);
