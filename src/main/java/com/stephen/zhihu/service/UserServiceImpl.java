@@ -10,7 +10,6 @@ import com.stephen.zhihu.dao.UserRepository;
 import com.stephen.zhihu.domain_elasticsearch.UserDoc;
 import com.stephen.zhihu.domain_jpa.User;
 import com.stephen.zhihu.dto.*;
-import com.stephen.zhihu.elasticsearch_repository.UserDocRepository;
 import com.stephen.zhihu.exception.PasswordIncorrectException;
 import com.stephen.zhihu.exception.SMSCodeNotCorrectException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +30,15 @@ public class UserServiceImpl implements UserService {
     private JedisPool jp;
     private JSMSService jsmsService;
     private TokenManager tokenManager;
-    private UserDocRepository repository;
+    private ElasticsearchService elasticsearchService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userDAO, JedisPool jp, JSMSService jsmsService, TokenManager tokenManager, UserDocRepository repository) {
+    public UserServiceImpl(UserRepository userDAO, JedisPool jp, JSMSService jsmsService, TokenManager tokenManager, ElasticsearchService elasticsearchService) {
         this.userDAO = userDAO;
         this.jp = jp;
         this.jsmsService = jsmsService;
         this.tokenManager = tokenManager;
-        this.repository = repository;
+        this.elasticsearchService = elasticsearchService;
     }
 
     @Override
@@ -69,7 +68,7 @@ public class UserServiceImpl implements UserService {
             tx.get("zhihu-user-count");
             Long count = (Long) tx.exec().get(0);
             User user = userDAO.register(phone, password, "User-" + count);
-            repository.save(new UserDoc(user.getId(), user.getNickname()));
+            elasticsearchService.saveUserDoc(new UserDoc(user.getId(), user.getNickname()));
             jedis.srem("zhihu-verified-phone-number", phone);
             return new RegisterResponse(user.getId());
         }
@@ -155,7 +154,7 @@ public class UserServiceImpl implements UserService {
         user = merge(user, node);
         userDAO.update(user);
         // 需要进一步认证
-        repository.save(new UserDoc(user.getId(), user.getNickname()));
+        elasticsearchService.saveUserDoc(new UserDoc(user.getId(), user.getNickname()));
         // 密码更新操作
         if (node.has("password")) {
 

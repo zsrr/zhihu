@@ -30,6 +30,8 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -40,6 +42,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
@@ -51,6 +54,7 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 @EnableCaching
 @EnableTransactionManagement
 @EnableElasticsearchRepositories(basePackages = "com.stephen.zhihu.elasticsearch_repository")
+@EnableAsync
 public class RootConfig {
 
     @Bean
@@ -218,5 +222,13 @@ public class RootConfig {
     @Bean
     public ElasticsearchOperations elasticsearchTemplate(Client client) {
         return new ElasticsearchTemplate(client);
+    }
+
+    @Bean(name = Constants.ASYNC_EXECUTOR)
+    public Executor asyncTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(20);
+        executor.setMaxPoolSize(200);
+        return executor;
     }
 }

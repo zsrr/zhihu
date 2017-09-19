@@ -125,16 +125,20 @@ public class UserController {
     }
 
     private static void checkLoginInfoWithChannel(String channel, LoginInfo info) {
-        if (channel.equals("phone")) {
-            if (info == null || info.getPassword() == null) {
-                throw new DataInvalidException();
-            }
-        } else if (channel.equals("qq") || channel.equals("wechat")) {
-             if (info == null || info.getOpenId() == null || info.getAccessToken() == null) {
-                 throw new DataInvalidException();
-             }
-        } else {
-            throw new ChannelInvalidException(channel);
+        switch (channel) {
+            case "phone":
+                if (info == null || info.getPassword() == null) {
+                    throw new DataInvalidException();
+                }
+                break;
+            case "qq":
+            case "wechat":
+                if (info == null || info.getOpenId() == null || info.getAccessToken() == null) {
+                    throw new DataInvalidException();
+                }
+                break;
+            default:
+                throw new ChannelInvalidException(channel);
         }
     }
 }

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+// 应该用权限将管理用户和普通用户区分开来，管理员用户可以增加话题
 @Entity
 @Table(name = "TOPICS", indexes = @Index(name = "title", columnList = "TITLE", unique = true))
 public class Topic {
