@@ -1,5 +1,6 @@
 package com.stephen.zhihu.domain_elasticsearch;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -7,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Document(indexName = "zhihu", type = "topics")
 public class TopicDoc {
 
+    @Id
     @Field(type = FieldType.Long)
     Long id;
 

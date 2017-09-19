@@ -5,6 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-public interface TopicDocRepository extends ElasticsearchRepository<TopicDoc, String> {
+public interface TopicDocRepository extends ElasticsearchRepository<TopicDoc, Long> {
     Page<TopicDoc> findByTopicName(String topicName, Pageable pageable);
 }
