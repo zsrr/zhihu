@@ -11,8 +11,8 @@ import com.stephen.zhihu.dao.UserRepository;
 import com.stephen.zhihu.domain_elasticsearch.UserDoc;
 import com.stephen.zhihu.domain_jpa.User;
 import com.stephen.zhihu.dto.*;
-import com.stephen.zhihu.exception.PasswordIncorrectException;
 import com.stephen.zhihu.exception.SMSCodeNotCorrectException;
+import com.stephen.zhihu.exception.UnAuthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -80,22 +80,22 @@ public class UserServiceImpl implements UserService {
     public LoginResponse loginByPassword(String phone, String password) {
         User user = userDAO.getUser(phone);
         if (!user.getPassword().equals(password)) {
-            throw new PasswordIncorrectException();
+            throw new UnAuthorizedException();
         }
         TokenModel tm = tokenManager.createToken(user.getId());
         return new LoginResponse(user, tm.getToken());
     }
 
-    @Override
+    /*@Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public LoginResponse loginByPassword(Long userId, String password) {
         User user = userDAO.getUser(userId);
         if (!user.getPassword().equals(password)) {
-            throw new PasswordIncorrectException();
+            throw new UnAuthorizedException();
         }
         TokenModel tm = tokenManager.createToken(user.getId());
         return new LoginResponse(user, tm.getToken());
-    }
+    }*/
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)

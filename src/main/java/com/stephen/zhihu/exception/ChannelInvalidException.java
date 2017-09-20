@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 
 public class ChannelInvalidException extends BaseRuntimeException {
 
+    private static final long serialVersionUID = -3452806781752779439L;
     String channelName;
 
     public ChannelInvalidException(String channelName) {

@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 
 public class DuplicatedUserException extends BaseRuntimeException {
 
+    private static final long serialVersionUID = -635354218380834610L;
+
     @Override
     public BaseResponse getBaseResponse() {
         ErrorDetail errorDetail = new ErrorDetail("Duplicated user", DuplicatedUserException.class, "用户名已被使用");

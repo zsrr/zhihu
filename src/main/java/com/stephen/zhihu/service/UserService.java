@@ -11,7 +11,6 @@ public interface UserService {
     RegisterResponse initPassword(String phone, String password);
 
     LoginResponse loginByPassword(String phone, String password);
-    LoginResponse loginByPassword(Long userId, String password);
     LoginResponse loginByQQ(String openId);
     LoginResponse loginByWechat(String openId);
 

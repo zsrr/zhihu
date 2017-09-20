@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 
 public class ActionResolveException extends BaseRuntimeException {
 
+    private static final long serialVersionUID = -3271247385282121150L;
     private String actionName;
 
     public ActionResolveException(String actionName) {

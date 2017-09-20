@@ -63,14 +63,14 @@ public class UserValidationServiceImpl implements UserValidationService {
     @Override
     public void loginValidation(String phone) {
         if (!userDAO.hasUser(phone)) {
-            throw new UserNotFoundException();
+            throw new NotFoundException();
         }
     }
 
     @Override
     public void loginValidation(Long id) {
         if (!userDAO.hasUser(id)) {
-            throw new UserNotFoundException();
+            throw new NotFoundException();
         }
     }
 
@@ -98,14 +98,14 @@ public class UserValidationServiceImpl implements UserValidationService {
     @Override
     public void loginByQQValidation(String openId) {
         if (!userDAO.isQQBound(openId)) {
-            throw new UserNotFoundException();
+            throw new NotFoundException();
         }
     }
 
     @Override
     public void loginByWechatValidation(String openId) {
         if (!userDAO.isWechatIdBound(openId)) {
-            throw new UserNotFoundException();
+            throw new NotFoundException();
         }
     }
 }

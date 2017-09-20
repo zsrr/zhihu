@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 
 public abstract class BaseRuntimeException extends RuntimeException {
 
+    private static final long serialVersionUID = 8760289831588818899L;
+
     public BaseRuntimeException() {
     }
 

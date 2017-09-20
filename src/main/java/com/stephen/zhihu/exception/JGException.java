@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 
 public class JGException extends BaseRuntimeException {
 
+    private static final long serialVersionUID = 1846396102779389953L;
+
     public JGException(Throwable cause) {
         super(cause);
     }

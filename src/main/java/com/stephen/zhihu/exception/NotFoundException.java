@@ -4,10 +4,12 @@ import com.stephen.zhihu.dto.BaseResponse;
 import com.stephen.zhihu.dto.ErrorDetail;
 import org.springframework.http.HttpStatus;
 
-public class UserNotFoundException extends BaseRuntimeException {
+public class NotFoundException extends BaseRuntimeException {
+    private static final long serialVersionUID = -4044388170173073929L;
+
     @Override
     public BaseResponse getBaseResponse() {
-        ErrorDetail errorDetail = new ErrorDetail("User not found", UserNotFoundException.class, "用户不存在");
+        ErrorDetail errorDetail = new ErrorDetail("Resource not found", NotFoundException.class, "资源不存在");
         return new BaseResponse(HttpStatus.NOT_FOUND, errorDetail);
     }
 

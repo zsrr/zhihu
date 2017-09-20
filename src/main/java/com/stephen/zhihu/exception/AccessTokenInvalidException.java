@@ -5,6 +5,8 @@ import com.stephen.zhihu.dto.ErrorDetail;
 import org.springframework.http.HttpStatus;
 
 public class AccessTokenInvalidException extends BaseRuntimeException {
+    private static final long serialVersionUID = 7825006730775544290L;
+
     @Override
     public BaseResponse getBaseResponse() {
         ErrorDetail ed = new ErrorDetail("Access token is invalid", this.getClass(), "验证失败");
