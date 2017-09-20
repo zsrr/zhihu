@@ -7,4 +7,6 @@ public interface QuestionRepository {
     Question getQuestion(Long id);
 
     Long addQuestion(Long userId, QuestionRequestBody body);
+
+    Long getQuestionerId(Long questionId);
 }

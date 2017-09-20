@@ -2,7 +2,7 @@ package com.stephen.zhihu.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.stephen.zhihu.exception.AccessTokenInvalidException;
+import com.stephen.zhihu.exception.UnAuthorizedException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -44,7 +44,7 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
             String responseStr = IOUtils.toString(response.getEntity().getContent(), "utf-8");
             ObjectNode on = new ObjectMapper().readValue(getJsonString(responseStr), ObjectNode.class);
             if (on.has("error") || !on.get("openid").asText().equals(openId)) {
-                throw new AccessTokenInvalidException();
+                throw new UnAuthorizedException();
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -75,7 +75,7 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
             String responseStr = IOUtils.toString(response.getEntity().getContent(), "utf-8");
             ObjectNode on = new ObjectMapper().readValue(responseStr, ObjectNode.class);
             if (on.get("errorcode").asInt() != 0) {
-                throw new AccessTokenInvalidException();
+                throw new UnAuthorizedException();
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();

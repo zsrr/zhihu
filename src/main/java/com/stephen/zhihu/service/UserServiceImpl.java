@@ -11,7 +11,6 @@ import com.stephen.zhihu.dao.UserRepository;
 import com.stephen.zhihu.domain_elasticsearch.UserDoc;
 import com.stephen.zhihu.domain_jpa.User;
 import com.stephen.zhihu.dto.*;
-import com.stephen.zhihu.exception.SMSCodeNotCorrectException;
 import com.stephen.zhihu.exception.UnAuthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,7 +54,7 @@ public class UserServiceImpl implements UserService {
                 jedis.sadd("zhihu-verified-phone-number", phone);
                 return new BaseResponse();
             } else {
-                throw new SMSCodeNotCorrectException();
+                throw new UnAuthorizedException();
             }
         }
     }

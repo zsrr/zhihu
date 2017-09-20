@@ -4,13 +4,12 @@ import com.stephen.zhihu.dto.BaseResponse;
 import com.stephen.zhihu.dto.ErrorDetail;
 import org.springframework.http.HttpStatus;
 
-public class DuplicatedUserException extends BaseRuntimeException {
-
-    private static final long serialVersionUID = -635354218380834610L;
+public class ResourceConflictException extends BaseRuntimeException {
+    private static final long serialVersionUID = 5066951808608110092L;
 
     @Override
     public BaseResponse getBaseResponse() {
-        ErrorDetail errorDetail = new ErrorDetail("Duplicated user", DuplicatedUserException.class, "用户名已被使用");
+        ErrorDetail errorDetail = new ErrorDetail("Resource conflict", this.getClass(), "资源定义发生冲突");
         return new BaseResponse(HttpStatus.CONFLICT, errorDetail);
     }
 

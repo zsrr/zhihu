@@ -39,15 +39,15 @@ public class UserValidationServiceImpl implements UserValidationService {
         Set<ConstraintViolation<User>> passwordViolations = validator.validateProperty(user, "password");
 
         if (!usernameViolations.isEmpty()) {
-            throw new DataInvalidException();
+            throw new PostDataInvalidException();
         }
 
         if (includePassword && !passwordViolations.isEmpty()) {
-            throw new DataInvalidException();
+            throw new PostDataInvalidException();
         }
 
         if (userDAO.hasUser(user.getPhone())) {
-            throw new DuplicatedUserException();
+            throw new ResourceConflictException();
         }
     }
 
@@ -55,7 +55,7 @@ public class UserValidationServiceImpl implements UserValidationService {
     public void isUserInVerifiedList(String phone) {
         try (Jedis jedis = jp.getResource()) {
             if (!jedis.sismember("zhihu-verified-phone-number", phone)) {
-                throw new UserNotVerifiedException();
+                throw new UnAuthorizedException();
             }
         }
     }
@@ -67,31 +67,31 @@ public class UserValidationServiceImpl implements UserValidationService {
         }
     }
 
-    @Override
+    /*@Override
     public void loginValidation(Long id) {
         if (!userDAO.hasUser(id)) {
             throw new NotFoundException();
         }
-    }
+    }*/
 
     @Override
     public void bindQQValidation(String qq) {
         if (userDAO.isQQBound(qq)) {
-            throw new QQAccountAlreadyBoundException();
+            throw new ResourceConflictException();
         }
     }
 
     @Override
     public void bindWechatValidation(String wechat) {
         if (userDAO.isWechatIdBound(wechat)) {
-            throw new WechatAlreadyBoundException();
+            throw new ResourceConflictException();
         }
     }
 
     @Override
     public void thirdPartyInfoValidation(ThirdPartyInfo info) {
         if (info == null || info.getOpenId() == null) {
-            throw new DataInvalidException();
+            throw new PostDataInvalidException();
         }
     }
 

@@ -6,9 +6,8 @@ import com.stephen.zhihu.authorization.Authorization;
 import com.stephen.zhihu.authorization.CurrentUserId;
 import com.stephen.zhihu.domain_jpa.User;
 import com.stephen.zhihu.dto.*;
-import com.stephen.zhihu.exception.ActionResolveException;
-import com.stephen.zhihu.exception.ChannelInvalidException;
-import com.stephen.zhihu.exception.DataInvalidException;
+import com.stephen.zhihu.exception.PostDataInvalidException;
+import com.stephen.zhihu.exception.HttpParamResolveException;
 import com.stephen.zhihu.service.ThirdPartyService;
 import com.stephen.zhihu.service.UserService;
 import com.stephen.zhihu.service.UserValidationService;
@@ -113,14 +112,14 @@ public class UserController {
     private static void checkRegisterInfoWithAction(String action, RegisterInfo info) {
         if (action.equals("verify")) {
             if (info == null || info.getCode() == null || info.getMsgId() == null) {
-                throw new DataInvalidException();
+                throw new PostDataInvalidException();
             }
         } else if (action.equals("init")) {
             if (info == null || info.getPassword() == null) {
-                throw new DataInvalidException();
+                throw new PostDataInvalidException();
             }
         } else if (!action.equals("send")) {
-            throw new ActionResolveException(action);
+            throw new HttpParamResolveException("action", action);
         }
     }
 
@@ -128,17 +127,17 @@ public class UserController {
         switch (channel) {
             case "phone":
                 if (info == null || info.getPassword() == null) {
-                    throw new DataInvalidException();
+                    throw new PostDataInvalidException();
                 }
                 break;
             case "qq":
             case "wechat":
                 if (info == null || info.getOpenId() == null || info.getAccessToken() == null) {
-                    throw new DataInvalidException();
+                    throw new PostDataInvalidException();
                 }
                 break;
             default:
-                throw new ChannelInvalidException(channel);
+                throw new HttpParamResolveException("channel", channel);
         }
     }
 }
