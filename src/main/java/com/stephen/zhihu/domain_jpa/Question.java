@@ -1,5 +1,8 @@
 package com.stephen.zhihu.domain_jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.stephen.zhihu.dto.QuestionRequestBody;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -24,15 +27,18 @@ public class Question {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false, name = "USER_ID")
+    @JsonIgnore
     protected User user;
 
     @ManyToMany(mappedBy = "questionsCaredAbout")
+    @JsonIgnore
     protected Set<User> usersConcerned = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "TOPIC_TO_QUESTIONS",
             joinColumns = @JoinColumn(name = "COMMENT_ID"),
             inverseJoinColumns = @JoinColumn(name = "TOPIC_ID"))
+    @JsonIgnore
     protected Set<Topic> topics = new HashSet<>();
 
     public Long getId() {
@@ -65,5 +71,9 @@ public class Question {
 
     public Set<User> getUsersConcerned() {
         return usersConcerned;
+    }
+
+    public Set<Topic> getTopics() {
+        return topics;
     }
 }
