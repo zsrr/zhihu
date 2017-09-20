@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-@Repository
+@Repository("userRepository")
 public class UserRepositoryImpl extends BaseRepository implements UserRepository {
 
     @Autowired
@@ -21,8 +21,8 @@ public class UserRepositoryImpl extends BaseRepository implements UserRepository
     @Override
     public boolean hasUser(String phone) {
         Session session = getCurrentSession();
-        TypedQuery<Long> userQuery = session.createQuery("select u.id from User u where u.phone = :phone").setParameter("phone", phone);
         try {
+            TypedQuery<Long> userQuery = session.createQuery("select u.id from User u where u.phone = :phone").setParameter("phone", phone);
             Long id = userQuery.getSingleResult();
             return id != null;
         } catch (NoResultException e) {
@@ -44,8 +44,8 @@ public class UserRepositoryImpl extends BaseRepository implements UserRepository
     @Override
     public boolean isQQBound(String qq) {
         Session session = getCurrentSession();
-        TypedQuery<Long> userQuery = session.createQuery("select u.id from User u where u.qqOpenId = :qq").setParameter("qq", qq);
         try {
+            TypedQuery<Long> userQuery = session.createQuery("select u.id from User u where u.qqOpenId = :qq").setParameter("qq", qq);
             Long id = userQuery.getSingleResult();
             return id != null;
         } catch (NoResultException e) {
@@ -56,8 +56,8 @@ public class UserRepositoryImpl extends BaseRepository implements UserRepository
     @Override
     public boolean isWechatIdBound(String wechat) {
         Session session = getCurrentSession();
-        TypedQuery<Long> userQuery = session.createQuery("select u.id from User u where u.wechatOpenId = :wechat").setParameter("wechat", wechat);
         try {
+            TypedQuery<Long> userQuery = session.createQuery("select u.id from User u where u.wechatOpenId = :wechat").setParameter("wechat", wechat);
             Long id = userQuery.getSingleResult();
             return id != null;
         } catch (NoResultException e) {

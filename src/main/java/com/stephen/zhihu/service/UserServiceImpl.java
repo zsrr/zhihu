@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public RegisterResponse initPassword(String phone, String password) {
+    public RegisterResponse registerInitPassword(String phone, String password) {
         try (Jedis jedis = jp.getResource()) {
             Transaction tx = jedis.multi();
             tx.incrBy("zhihu-user-count", 1);

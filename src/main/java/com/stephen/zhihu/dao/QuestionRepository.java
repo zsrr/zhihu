@@ -9,4 +9,6 @@ public interface QuestionRepository {
     Long addQuestion(Long userId, QuestionRequestBody body);
 
     Long getQuestionerId(Long questionId);
+
+    boolean hasQuestion(Long questionId);
 }

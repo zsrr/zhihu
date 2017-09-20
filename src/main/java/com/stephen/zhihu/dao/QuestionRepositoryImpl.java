@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 @Repository
@@ -52,5 +53,16 @@ public class QuestionRepositoryImpl extends BaseRepository implements QuestionRe
         Session session = getCurrentSession();
         TypedQuery<Long> query = session.createQuery("select q.user.id from Question q where q.id = :id").setParameter("id", questionId);
         return query.getSingleResult();
+    }
+
+    @Override
+    public boolean hasQuestion(Long questionId) {
+        Session session = getCurrentSession();
+        TypedQuery<Long> query = session.createQuery("select q.id from Question q where q.id = :id").setParameter("id", questionId);
+        try {
+            return query.getSingleResult() != null;
+        } catch (NoResultException e) {
+            return false;
+        }
     }
 }

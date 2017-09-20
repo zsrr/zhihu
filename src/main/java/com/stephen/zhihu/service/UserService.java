@@ -8,7 +8,7 @@ import com.stephen.zhihu.dto.*;
 public interface UserService {
     VerificationSMSResponse registerSendSMSCode(String phone);
     BaseResponse registerVerifyCode(String phone, String msgId, String code);
-    RegisterResponse initPassword(String phone, String password);
+    RegisterResponse registerInitPassword(String phone, String password);
 
     LoginResponse loginByPassword(String phone, String password);
     LoginResponse loginByQQ(String openId);

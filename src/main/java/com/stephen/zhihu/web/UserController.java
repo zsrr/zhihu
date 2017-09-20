@@ -50,7 +50,7 @@ public class UserController {
         User user = new User(phone, registerInfo.getPassword());
         validationService.isUserInVerifiedList(phone);
         validationService.registerValidation(user, true);
-        return new ResponseEntity<>(userService.initPassword(phone, registerInfo.getPassword()), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.registerInitPassword(phone, registerInfo.getPassword()), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{identifier}", method = RequestMethod.GET)
