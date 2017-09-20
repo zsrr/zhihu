@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.stephen.zhihu.authorization.TokenManager;
 import com.stephen.zhihu.authorization.TokenModel;
+import com.stephen.zhihu.base.UpdateMessageInfo;
 import com.stephen.zhihu.dao.UserRepository;
 import com.stephen.zhihu.domain_elasticsearch.UserDoc;
 import com.stephen.zhihu.domain_jpa.User;
@@ -117,6 +118,9 @@ public class UserServiceImpl implements UserService {
         }
         if (user.getNickname().startsWith("User-") && info.getNickname() != null) {
             user.setNickname(info.getNickname());
+            elasticsearchService.updateDoc(UserDoc.class, "users",
+                    user.getId().toString(),
+                    new UpdateMessageInfo("userName", info.getNickname()));
         }
         if (user.getGender() == null && info.getGender() != null) {
             user.setGender(info.getGender());
@@ -153,11 +157,14 @@ public class UserServiceImpl implements UserService {
         User user = userDAO.getUser(userId);
         user = merge(user, node);
         userDAO.update(user);
-        // 需要进一步认证
-        elasticsearchService.saveUserDoc(new UserDoc(user.getId(), user.getNickname()));
         // 密码更新操作
         if (node.has("password")) {
 
+        }
+        if (node.has("nickname")) {
+            elasticsearchService.updateDoc(UserDoc.class, "users",
+                    userId.toString(),
+                    new UpdateMessageInfo("userName", user.getNickname()));
         }
         return new BaseResponse();
     }
