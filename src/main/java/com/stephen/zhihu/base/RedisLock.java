@@ -1,6 +1,7 @@
 package com.stephen.zhihu.base;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Transaction;
 
 import java.util.UUID;
@@ -29,9 +30,15 @@ public class RedisLock {
         while (true) {
             try {
                 if (identifier.equals(connection.get(lockName))) {
+                    Pipeline pipeline = connection.pipelined();
+                    pipeline.multi();
+                    /*// 立即向服务端发送
                     Transaction tx = connection.multi();
                     tx.del(lockName);
-                    tx.exec();
+                    tx.exec();*/
+                    pipeline.del(lockName);
+                    pipeline.exec();
+                    pipeline.sync();
                     return true;
                 }
                 connection.unwatch();

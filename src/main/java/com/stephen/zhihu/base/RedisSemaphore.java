@@ -26,16 +26,19 @@ public class RedisSemaphore {
         pipeline.zremrangeByScore(semaName, "-inf", "" + (System.currentTimeMillis() - timeout));
         pipeline.zinterstore(setName, new ZParams().weightsByDouble(1.0, 0.0), setName, semaName);
         pipeline.exec();
+        // 这一步才是执行
+        pipeline.sync();
 
         pipeline.incr(cName);
-        Long counter = (Long) (pipeline.exec().get().get(0));
+        Long counter = (Long) (pipeline.syncAndReturnAll().get(0));
 
         pipeline.multi();
         pipeline.zadd(semaName, System.currentTimeMillis(), uuid);
         pipeline.zadd(setName, counter, uuid);
         pipeline.zrank(setName, uuid);
+        pipeline.exec();
 
-        List<Object> results = pipeline.exec().get();
+        List<Object> results = pipeline.syncAndReturnAll();
 
         if (Integer.parseInt(results.get(results.size() - 1).toString()) < limit) {
             RedisLock.releaseLock(connection, "lock-semaphore", lockIdentifier);
@@ -52,6 +55,8 @@ public class RedisSemaphore {
         pipeline.multi();
         pipeline.zrem(semaName, identifier);
         pipeline.zrem(setName, identifier);
+        pipeline.exec();
+        pipeline.sync();
     }
 
 }

@@ -31,7 +31,7 @@ public class RedisAccessCounter implements Runnable {
             pipeline.hincrBy("count:" + hashKey, pnow + "", 1);
         }
 
-        pipeline.exec();
+        pipeline.sync();
     }
 
     public Map<Long, Long> getCounter(int precision) {
@@ -119,7 +119,7 @@ public class RedisAccessCounter implements Runnable {
                     for (Long removal : removals) {
                         pipeline.hdel(hkey, removal.toString());
                     }
-                    pipeline.exec();
+                    pipeline.sync();
                 }
             }
             passes += 1;
